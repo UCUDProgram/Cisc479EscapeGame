@@ -1,0 +1,44 @@
+li{
+    list-style-type:none;
+}
+
+input{
+    width:100px;
+}
+
+.invent{
+    display:inline-block;
+    width:150px;
+}
+
+.input_area{
+    display:block;
+}
+
+.input{
+    display:inline-block;
+    width:250px;
+}
+
+.button_block{
+    display:inline-block;
+}
+
+.info_align{
+    /*text-align:right;*/
+    display:block;
+}
+
+.room{
+    display:inline-block;
+    width:100px;
+}
+
+.room_dis{
+    width:200px;
+}
+
+
+/*.curr_room{*/
+/*    width:250px;*/
+/*}*/
