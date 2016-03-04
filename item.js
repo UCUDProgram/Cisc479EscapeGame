@@ -16,11 +16,11 @@ function trap(name, itloc){
 };
 
 var damageValue = function(){
-  return Math.floor(Math.random() * 10);  
+  return Math.floor(Math.random() * 10 + 1);  
 };
 
 var setLife = function(name){
-  if( (name == "chain") || (name == "cutters") )
+  if( (name == "Chainsaw") || (name == "cutters") )
     return "forever";
   else
     return "single";

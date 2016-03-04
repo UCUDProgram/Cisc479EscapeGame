@@ -1,4 +1,5 @@
 var items = [];
+var unUsedRooms = [];
 var locations = [];
 var playerHealth = 50;
 
@@ -35,22 +36,46 @@ var readItem = function(){
     display_items();
 };
 
-//Used to determine if item is in the inventory
-// If in inventory, player uses item and remove from list
-var use_item = function(item){
-    var index_of_item = items.indexOf(item);
-    if (index_of_item > -1){
-        items.splice(index_of_item,1);
-    }
-};
-
-// Used to read the room selection input box
-var readRoom = function(){
-    roomCheck(document.getElementById('roomSelect').value);
+var readRoom = function(aroom){
+    roomCheck(aroom);
     updateroomLocations();
     display_rooms();
     display_room();
     display_locations();
+};
+
+var updateUnusedRooms = function(room){
+  var index_of_room = unUsedRooms.indexOf(room);
+  if (index_of_room > -1)
+        rooms.push(unUsedRooms[index_of_room]);
+        unUsedRooms.splice(index_of_room,1);
+};
+
+var parseKey = function (key){
+  var keyLength = key.length();
+  
+  aroom = kitchen_key;
+  updateUnusedRooms(aroom);
+};
+
+var updateRooms = function(){
+  rooms.forEach(function (aroom){  
+      if (aroom.roomItems.length == 0)
+            var room_index = rooms.indexOf(aroom);
+            rooms.splice(room_index,1);
+  });
+};
+
+
+//Used to determine if item is in the inventory
+// If in inventory, player uses item and remove from list
+var use_item = function(item){
+    console.log(item);
+    var index_of_item = items.indexOf(item);
+    if (index_of_item > -1){
+        itemLife(item[index_of_item], items);
+        // items.splice(index_of_item,1);
+    }
 };
 
 //Used to update the locations in the room, to explore
@@ -81,9 +106,9 @@ var roomCheck = function(newroom){
     }})};
 
 // Used to read the area explore button
-var readArea =function(){
-    areaCheck(document.getElementById('Exploration').value);
-    getItem(document.getElementById('Exploration').value);
+var readArea =function(aLocation){
+    areaCheck(aLocation);
+    getItem(aLocation);
     display_items();
     display_locations();
     display_room();
@@ -103,7 +128,7 @@ var itemHandling = function(itemtoHandle){
     if (aneffect.startsWith("Damage")){
         damagePlayer(itemtoHandle.effect)
     } else{
-        items.push(itemtoHandle.name);
+        items.push(itemtoHandle);
     }
 };
 
@@ -117,9 +142,18 @@ var getItem = function(loc){
             if(x.itemLocation == loc){
                 index = itemList.indexOf(x);
                 itemHandling(x);
+                itemLife(x,itemList);
              }})
-       itemList.splice(index, 1);   
       }})
+};
+
+
+
+
+var itemLife = function (item, rmitms){
+  if (item.life == "single")
+        var index = rmitms.indexOf(item);
+        rmitms.splice(index,1);
 };
 
 // This Block of Code deals with the View of the Game
@@ -149,6 +183,7 @@ var display_locations = function(){
         var $li = document.createElement('p');
         $li.innerHTML = x;
         $li.classList.add('x');
+        $li.addEventListener('click',function (ev){ readArea(x)});
         $p.appendChild($li); 
     });
 };
@@ -158,9 +193,10 @@ var display_locations = function(){
 var display_items = function(){
     var $p = document.getElementById('item_display');
     $p.innerHTML = 'Inventory';
+    console.log(items);
     items.forEach(function(item){
         var $li = document.createElement('p');
-        $li.innerHTML = item;
+        $li.innerHTML = item.name;
         $li.classList.add('item');
         $p.appendChild($li); 
     });
@@ -174,6 +210,7 @@ var display_rooms = function(){
         var $li = document.createElement('p');
         $li.innerHTML = x.name;
         $li.classList.add('x.name');
+        $li.addEventListener('click',function (ev){ readRoom(x.name)});
         $p.appendChild($li); 
     });
 };
@@ -205,10 +242,6 @@ var appStart = function(){
     display_rooms();
     display_health()
     display_room();
-    
-    document.getElementById('InvSel').addEventListener('click', readItem);
-    document.getElementById('RoomSel').addEventListener('click', readRoom);
-    document.getElementById('Explore').addEventListener('click', readArea);
 };
 
 document.addEventListener("DOMContentLoaded", appStart);
