@@ -16,7 +16,7 @@ function trap(name, itloc){
 };
 
 var damageValue = function(){
-  return Math.floor(Math.random() * 10 + 1);  
+  return (Math.floor(Math.random() * 10) + 1);  
 };
 
 var setLife = function(name){

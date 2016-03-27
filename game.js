@@ -42,6 +42,7 @@ var readRoom = function(aroom){
     display_rooms();
     display_room();
     display_locations();
+    display_health();
 };
 
 var updateUnusedRooms = function(room){
@@ -61,11 +62,19 @@ var parseKey = function (key){
 var updateRooms = function(){
   rooms.forEach(function (aroom){  
       if (aroom.roomItems.length == 0)
-            var room_index = rooms.indexOf(aroom);
-            rooms.splice(room_index,1);
+           removeRoom(aroom);
+           curr_room = rooms[0].name;
+           updateroomLocations();
+           display_rooms();
+           display_locations();
+           display_room();
   });
 };
 
+var removeRoom = function(aroom){
+    var room_index = rooms.indexOf(aroom);
+        rooms.splice(room_index,1);
+};
 
 //Used to determine if item is in the inventory
 // If in inventory, player uses item and remove from list
@@ -109,9 +118,11 @@ var roomCheck = function(newroom){
 var readArea =function(aLocation){
     areaCheck(aLocation);
     getItem(aLocation);
+    updateRooms();
     display_items();
     display_locations();
     display_room();
+    display_health();
 };
 
 // Used to make sure that the explored area is a valid one
@@ -222,20 +233,22 @@ var display_rooms = function(){
 // Functions deal with the Player Health aspect of the model
 // Parses the Damage Value String to extract the value of the Damage
 var parseDamageValue = function(damageString){
-  return damageString.substr(-1);  
+  return damageString.substr(-2,2);  
 };
 
 // Update the player's Health, Based on Damage Value of the item
 var damagePlayer = function(damageItem){
     var damage = parseDamageValue(damageItem);
     playerHealth -= damage;
-    display_health();
+    // display_health();
     
 };
 
 //Used to implement the game logic and listeners
 // Function Declaration & first two lines written by Andy Novocin
 var appStart = function(){
+    
+    // console.log(knife.constructor.name);
     initLoc();
     display_locations();
     display_items();
