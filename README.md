@@ -8,7 +8,9 @@ If you die before escaping the house, game over.
 
 Use the input boxes and buttons to navigate to different rooms, explore locations in a room and use items in your inventory.
 
-
-
-
 This game was the product of an assignment at the University of Delaware, CISC 479 Introduction to Client-Side Engineering.
+
+
+The link below is to this active project, so you can see the behavior of the website, running in realtime.
+
+https://ucudprogram.github.io/Cisc479EscapeGame/
